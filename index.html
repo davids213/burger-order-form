@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Management System</title>
+</head>
+<body>
+    <h2>Order Your Burger</h2>
+    <form id="orderForm">
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="burger">Burger:</label><br>
+        <input type="text" id="burger" name="burger" required><br><br>
+
+        <label for="vegaPatty">Vega Patty:</label><br>
+        <input type="checkbox" id="vegaPatty" name="vegaPatty"><br><br>
+
+        <label for="pickupTime">Pickup Time:</label><br>
+        <input type="time" id="pickupTime" name="pickupTime" required><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        document.getElementById('orderForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                if (key === 'vegaPatty') {
+                    data[key] = value === 'on';
+                } else {
+                    data[key] = value;
+                }
+            });
+            fetch('https://script.google.com/macros/s/AKfycbyzWAv1tnA1g3yapkXdDf9WN6i5qP3JTWU8BTf8sF7NA0wWwr03qcIV11j_nwCgrebf/exec', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    alert('Order submitted successfully!');
+                } else {
+                    alert('There was an issue submitting your order.');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
